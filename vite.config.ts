@@ -71,10 +71,13 @@ export default defineConfig({
         singleAttributePerLine: false,
         htmlWhitespaceSensitivity: 'css',
         ignorePatterns: [
+            '.claude/skills/speckit-*/**',
             '.github/**',
+            '.specify/**',
             'composer.json',
             'resources/js/components/ui/*',
             'resources/views/mail/*',
+            'specs/**',
         ],
         sortTailwindcss: {
             functions: ['clsx', 'cn', 'cva'],
