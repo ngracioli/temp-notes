@@ -30,7 +30,10 @@ yarn-error.log
 /.zed
 /.agents
 /.amp
-/.claude
+/.claude/*
+!/.claude/skills/
+/.claude/skills/*
+!/.claude/skills/speckit-*/
 /.codex
 /.cursor
 /.factory
