@@ -60,7 +60,8 @@ $this->actingAs($user)
 ## Pest Browser
 
 - Uses `pestphp/pest-plugin-browser` with Playwright (Chromium). First time on a machine: `npx playwright install chromium`.
-- Run browser tests with `composer test:browser`, never `php artisan test --testsuite=Browser` directly: `pest-plugin-browser` stops its `sh -c` wrapper but leaves the `node playwright run-server` child alive, so the script kills it with `pkill` afterwards and keeps the test exit code. `composer test` (used by `composer ci:check`) does the same for the full suite.
+- Run browser tests with `composer test:browser`, or any `php artisan test` / `vendor/bin/pest` command. `pest-plugin-browser` stops its `sh -c` wrapper but leaves the `node playwright run-server` child alive; a shutdown hook in `tests/Pest.php` kills that process by its port after any run that started it, so no cleanup step is needed and the test exit code is unchanged.
+- `composer test:browser` passes `--do-not-fail-on-empty-test-suite`, so it exits 0 while `tests/Browser/` has no tests.
 - Browser tests run against built assets: run `npm run build` (or keep `npm run dev` running) before them.
 - Use `visit(route('...'))`, interact with `fill()`/`click()`/`press()`, and assert visible results (`assertSee`, `assertPathIs`) plus `assertNoJavaScriptErrors()`.
 - Screenshots of failures go to `tests/Browser/Screenshots/` (git-ignored).
