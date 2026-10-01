@@ -21,6 +21,12 @@ Format: `<type>(<optional scope>): <description>`
 - Work happens on short-lived branches: `feat/<slug>`, `fix/<slug>`, `chore/<slug>`; the slug is English kebab-case (`feat/note-expiration`).
 - Changes reach `main` only through a pull request, merged with squash. The PR title follows the Conventional Commits format, because it becomes the squash commit message.
 
+## Pull Requests
+
+- Open, update, and merge PRs with the `pull-request` skill; the description follows `.github/pull_request_template.md`.
+- Merge only through a PR, always with squash, and only after asking the user.
+- The PR title follows Conventional Commits, because the squash turns it into the commit on `main`. The `pr-title` workflow (`.github/workflows/pr-title.yml`) enforces it with the same rule as the `commit-msg` hook.
+
 ## Forbidden
 
 - Never commit `.env` or any file containing secrets.
