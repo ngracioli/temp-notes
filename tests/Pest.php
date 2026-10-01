@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Pest\Browser\Playwright\Servers\PlaywrightNpmServer;
+use Pest\Browser\Plugin as BrowserPlugin;
+use Pest\Browser\ServerManager;
 use Tests\TestCase;
 
 /*
@@ -17,6 +20,36 @@ use Tests\TestCase;
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature', 'Browser');
+
+/*
+|--------------------------------------------------------------------------
+| Playwright Cleanup
+|--------------------------------------------------------------------------
+|
+| pest-plugin-browser stops the "sh -c" wrapper of its Playwright server but leaves the
+| "node playwright run-server" child alive. When this run started a server, kill that
+| child by its port, so servers of parallel runs or other projects are left untouched.
+| SIGKILL is required: the orphan ignores SIGTERM at this point, and the plugin has
+| already closed the browser, so no Chromium process is left behind.
+|
+*/
+
+register_shutdown_function(function (): void {
+    if (! BrowserPlugin::$booted) {
+        return;
+    }
+
+    // ponytail: relies on the plugin's @internal classes; remove once the plugin kills its own child process.
+    $server = ServerManager::instance()->playwright();
+
+    if (! $server instanceof PlaywrightNpmServer) {
+        return;
+    }
+
+    $pattern = sprintf('^node .*playwright run-server --host %s --port %d ', preg_quote($server->host), $server->port);
+
+    exec('pkill -KILL -f '.escapeshellarg($pattern));
+});
 
 /*
 |--------------------------------------------------------------------------

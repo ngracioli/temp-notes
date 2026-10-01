@@ -77,11 +77,11 @@
             "@php artisan config:clear --ansi",
             "@lint:check",
             "@types:check",
-            "php artisan test; status=$?; pkill -f '^node ./node_modules/.bin/playwright'; exit $status"
+            "@php artisan test"
         ],
         "test:browser": [
             "@php artisan config:clear --ansi",
-            "php artisan test --testsuite=Browser --do-not-fail-on-empty-test-suite; status=$?; pkill -f '^node ./node_modules/.bin/playwright'; exit $status"
+            "@php artisan test --testsuite=Browser --do-not-fail-on-empty-test-suite"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
