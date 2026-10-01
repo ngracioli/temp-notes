@@ -31,6 +31,7 @@ yarn-error.log
 /.agents
 /.amp
 /.claude
+/.codex
 /.cursor
 /.factory
 /.grok
